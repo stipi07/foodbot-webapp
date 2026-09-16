@@ -78,6 +78,16 @@
 
         const BOT = 'nsdt01bot';
 
+        function goToStart(param) {
+            const url = 'https://t.me/' + BOT + '?start=' + param;
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink(url);
+            } else {
+                window.location.href = url;
+            }
+            setTimeout(() => tg.close(), 300);
+        }
+
         function addProduct() {
             const input = document.getElementById('product');
             const value = input.value.trim();
@@ -88,15 +98,15 @@
             const encoded = encodeURIComponent(value)
                 .replace(/%20/g, '_')
                 .replace(/%2C/g, '_');
-            tg.openTelegramLink('https://t.me/' + BOT + '?start=add_' + encoded);
+            goToStart('add_' + encoded);
         }
 
         function openPantry() {
-            tg.openTelegramLink('https://t.me/' + BOT + '?start=pantry');
+            goToStart('pantry');
         }
 
         function openCan() {
-            tg.openTelegramLink('https://t.me/' + BOT + '?start=can');
+            goToStart('can');
         }
     </script>
 </body>
