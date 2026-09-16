@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бот для питания</title>
+    <title>Холодильник</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -11,22 +11,27 @@
             background: var(--tg-theme-bg-color, #ffffff);
             color: var(--tg-theme-text-color, #000000);
             margin: 0;
-            padding: 20px;
+            padding: 16px;
             min-height: 100vh;
         }
-        h1 {
-            font-size: 22px;
-            margin: 0 0 16px 0;
-        }
+        h1 { font-size: 20px; margin: 0 0 16px 0; }
         .card {
             background: var(--tg-theme-secondary-bg-color, #f0f0f0);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 12px;
         }
-        .user-info {
-            font-size: 14px;
-            opacity: 0.7;
+        .label { font-size: 14px; opacity: 0.7; margin-bottom: 8px; }
+        input[type=text] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--tg-theme-hint-color, #ccc);
+            background: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+            font-size: 16px;
+            margin-bottom: 8px;
         }
         button {
             background: var(--tg-theme-button-color, #2ea6ff);
@@ -37,36 +42,56 @@
             font-size: 16px;
             width: 100%;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 4px;
         }
-        button:active {
-            opacity: 0.8;
+        button:active { opacity: 0.8; }
+        button.secondary {
+            background: var(--tg-theme-secondary-bg-color, #e0e0e0);
+            color: var(--tg-theme-text-color, #000);
+        }
+        .hint {
+            font-size: 13px;
+            opacity: 0.6;
+            text-align: center;
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
-    <h1>🍳 Бот для питания</h1>
+    <h1>🧊 Холодильник</h1>
 
     <div class="card">
-        <div>Привет, <b id="username">друг</b>!</div>
-        <div class="user-info">Это твоё мини-приложение. Скоро здесь будет холодильник и рецепты.</div>
+        <div class="label">Что добавить?</div>
+        <input type="text" id="product" placeholder="яйца, молоко, мука" autocomplete="off">
+        <button onclick="addProduct()">Добавить</button>
     </div>
 
-    <button onclick="testClick()">Проверить связь с ботом</button>
+    <button class="secondary" onclick="openPantry()">📋 Показать холодильник</button>
+    <button class="secondary" onclick="openCan()">🍳 Что можно приготовить?</button>
+
+    <div class="hint">После действия приложение закроется — ответ придёт в чат</div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        const user = tg.initDataUnsafe?.user;
-        if (user) {
-            document.getElementById('username').textContent =
-                user.first_name || user.username || 'друг';
+        function addProduct() {
+            const input = document.getElementById('product');
+            const value = input.value.trim();
+            if (!value) {
+                tg.showAlert('Введи продукт');
+                return;
+            }
+            tg.sendData('add:' + value);
         }
 
-        function testClick() {
-            tg.showAlert('Привет из Mini App!');
+        function openPantry() {
+            tg.sendData('pantry');
+        }
+
+        function openCan() {
+            tg.sendData('can');
         }
     </script>
 </body>
