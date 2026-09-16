@@ -78,6 +78,14 @@
 
         const BOT = 'nsdt01bot';
 
+        function toBase64(str) {
+            const utf8 = unescape(encodeURIComponent(str));
+            return btoa(utf8)
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+        }
+
         function goToStart(param) {
             const url = 'https://t.me/' + BOT + '?start=' + param;
             if (tg.openTelegramLink) {
@@ -95,10 +103,8 @@
                 tg.showAlert('Введи продукт');
                 return;
             }
-            const encoded = encodeURIComponent(value)
-                .replace(/%20/g, '_')
-                .replace(/%2C/g, '_');
-            goToStart('add_' + encoded);
+            const encoded = toBase64(value);
+            goToStart('b64_' + encoded);
         }
 
         function openPantry() {
