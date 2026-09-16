@@ -86,14 +86,9 @@
                 .replace(/=+$/, '');
         }
 
-        function goToStart(param) {
+               function goToStart(param) {
             const url = 'https://t.me/' + BOT + '?start=' + param;
-            if (tg.openTelegramLink) {
-                tg.openTelegramLink(url);
-            } else {
-                window.location.href = url;
-            }
-            setTimeout(() => tg.close(), 300);
+            tg.openTelegramLink(url);
         }
 
         function addProduct() {
