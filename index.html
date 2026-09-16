@@ -76,6 +76,8 @@
         tg.ready();
         tg.expand();
 
+        const BOT = 'nsdt01bot';
+
         function addProduct() {
             const input = document.getElementById('product');
             const value = input.value.trim();
@@ -83,15 +85,18 @@
                 tg.showAlert('Введи продукт');
                 return;
             }
-            tg.sendData('add:' + value);
+            const encoded = encodeURIComponent(value)
+                .replace(/%20/g, '_')
+                .replace(/%2C/g, '_');
+            tg.openTelegramLink('https://t.me/' + BOT + '?start=add_' + encoded);
         }
 
         function openPantry() {
-            tg.sendData('pantry');
+            tg.openTelegramLink('https://t.me/' + BOT + '?start=pantry');
         }
 
         function openCan() {
-            tg.sendData('can');
+            tg.openTelegramLink('https://t.me/' + BOT + '?start=can');
         }
     </script>
 </body>
